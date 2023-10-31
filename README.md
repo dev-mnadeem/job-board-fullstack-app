@@ -336,3 +336,7 @@ package. The container definitions now use that same path and copy the Prisma
 client generated in the build stage into the runtime image. The historical Yarn
 locks are retained; npm lockfiles are the source for the checks above. Containers
 have not been built or booted here.
+
+## Author
+
+[**Muhammad Nadeem**](https://github.com/dev-mnadeem)
