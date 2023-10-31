@@ -20,7 +20,7 @@ services:
     build:
       context: ./jobs-server
       target: build
-    command: ['yarn', 'prisma', 'migrate', 'deploy']
+    command: ['npm', 'run', 'migrate']
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-jobs}:${POSTGRES_PASSWORD:-jobs}@db:5432/${POSTGRES_DB:-jobs-db}
     depends_on:
@@ -34,7 +34,7 @@ services:
     build:
       context: ./jobs-server
       target: build
-    command: ['yarn', 'prisma', 'db', 'seed']
+    command: ['npm', 'run', 'seed']
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-jobs}:${POSTGRES_PASSWORD:-jobs}@db:5432/${POSTGRES_DB:-jobs-db}
     depends_on:

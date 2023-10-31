@@ -1,0 +1,11 @@
+{
+  "mode": "Real disposable PostgreSQL and seeded local accounts",
+  "checks": [
+    "31 API integration tests",
+    "Login against real API",
+    "Apply to job",
+    "Application persists after reload",
+    "Desktop and mobile captures",
+    "No JavaScript page errors"
+  ]
+}

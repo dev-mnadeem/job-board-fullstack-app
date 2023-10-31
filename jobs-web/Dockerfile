@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
 # ---- build ------------------------------------------------------------------
-FROM node:18.16-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY tsconfig.json ./
 COPY public ./public
@@ -15,7 +15,7 @@ COPY src ./src
 # supplied here rather than at container start.
 ARG REACT_APP_API_URL="http://localhost:8080/api"
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
-RUN yarn build
+RUN npm run build
 
 # ---- runtime ----------------------------------------------------------------
 FROM nginx:1.25-alpine AS runtime

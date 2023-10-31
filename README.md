@@ -128,13 +128,14 @@ Needs Node 18.16 or newer and a PostgreSQL 14+ you can write to. Verified here o
 ```bash
 cd jobs-server
 cp .env.example .env            # then set JWT_KEY — the server refuses to boot without it
-yarn install && yarn prisma migrate deploy
-yarn seed                       # 6 users, 12 roles, 21 applications
-yarn dev                        # http://localhost:8080
+npm ci && node node_modules/prisma/build/index.js generate
+npm run migrate
+npm run seed                    # 6 users, 12 roles, 21 applications
+npm run dev                     # http://localhost:8080
 
 cd ../jobs-web                  # second terminal
 cp .env.example .env
-yarn install && yarn start      # http://localhost:3000
+npm ci && npm start              # http://localhost:3000
 ```
 
 Sign in with a seeded demo account: `johndoe@example.com` / `abcd1234`.
@@ -318,3 +319,20 @@ Once someone does: `cp .env.example .env` (set `JWT_KEY`), then
   same path and return the same message, but brute force is unthrottled.
 - **Applicant counts are aggregated per request,** not cached. **The API tests need a real
   PostgreSQL** — they are integration tests by design.
+
+## Current native verification
+
+![Persisted job application in the native client](docs/screenshots/native-desktop.png)
+
+[Mobile capture](docs/screenshots/native-mobile.png) and
+[browser checks](docs/native-browser.json). The current Node 22 run passed all
+31 API tests against a real disposable PostgreSQL database, all 30 client tests,
+and both production builds. Browser checks cover login, applying to a role,
+and seeing the saved application after reload. Password hashing uses bcryptjs;
+the authorization and password-flow integration tests pass against stored hashes.
+
+The validated installation path uses `npm ci` and the npm lockfiles in each
+package. The container definitions now use that same path and copy the Prisma
+client generated in the build stage into the runtime image. The historical Yarn
+locks are retained; npm lockfiles are the source for the checks above. Containers
+have not been built or booted here.
